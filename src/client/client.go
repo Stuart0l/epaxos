@@ -26,6 +26,7 @@ var masterPort *int = flag.Int("mport", 7087, "Master port.")
 var procs *int = flag.Int("p", 2, "GOMAXPROCS.")
 var conflicts *int = flag.Int("c", 0, "Percentage of conflicts. If -1, uses Zipfian distribution.")
 var forceLeader = flag.Int("l", -1, "Force client to talk to a certain replica.")
+var leaderAddr *string = flag.String("laddr", "", "Leader address")
 var startRange = flag.Int("sr", 0, "Key range start")
 var T = flag.Int("T", 10, "Number of threads (simulated clients).")
 var outstandingReqs = flag.Int64("or", 1, "Number of outstanding requests a thread can have at any given time.")
@@ -98,7 +99,8 @@ func main() {
 	readings := make(chan *response, 100000)
 
 	for i := 0; i < *T; i++ {
-		server, err := net.Dial("tcp", rlReply.ReplicaList[leader])
+		// server, err := net.Dial("tcp", rlReply.ReplicaList[leader])
+		server, err := net.Dial("tcp", *leaderAddr)
 		if err != nil {
 			log.Fatalf("Error connecting to replica %d\n", leader)
 		}

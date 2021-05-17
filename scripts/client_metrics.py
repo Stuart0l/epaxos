@@ -34,15 +34,21 @@ def get_metrics(dirname):
         tputs = []
         for l in f:
             l = l.split(' ')
-            tputs.append(float(l[2]))
+            try:
+                tputs.append(float(l[2]))
+            except:
+                pass
 
     with open(path.join(dirname, 'latency.txt')) as f:
         exec_lats = []
         commit_lats = []
         for l in f:
             l = l.split(' ')
-            exec_lats.append(float(l[1]))
-            commit_lats.append(float(l[2]))
+            try:
+                exec_lats.append(float(l[1]))
+                commit_lats.append(float(l[2]))
+            except:
+                pass
 
     return {
         'mean_lat_commit': statistics.mean(commit_lats),
