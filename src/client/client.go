@@ -100,7 +100,7 @@ func main() {
 
 	for i := 0; i < *T; i++ {
 		// server, err := net.Dial("tcp", rlReply.ReplicaList[leader])
-		server, err := net.Dial("tcp", *leaderAddr)
+		server, err := net.Dial("tcp", fmt.Sprintf("%s:7070", *leaderAddr))
 		if err != nil {
 			log.Fatalf("Error connecting to replica %d\n", leader)
 		}
