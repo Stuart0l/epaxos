@@ -32,23 +32,34 @@ def get_metrics(dirname):
     """
     with open(path.join(dirname, 'lattput.txt')) as f:
         tputs = []
-        for l in f:
-            l = l.split(' ')
-            try:
-                tputs.append(float(l[2]))
-            except:
-                pass
+        i = 0
+        lines = f.readlines()
+        nline = len(lines)
+        for l in lines:
+            # drop first and last 30 seconds
+            if i >= 30 and i <= nline - 30:
+                l = l.split(' ')
+                try:
+                    tputs.append(float(l[2]))
+                except:
+                    pass
+            i = i + 1
 
     with open(path.join(dirname, 'latency.txt')) as f:
         exec_lats = []
         commit_lats = []
-        for l in f:
-            l = l.split(' ')
-            try:
-                exec_lats.append(float(l[1]))
-                commit_lats.append(float(l[2]))
-            except:
-                pass
+        i = 0
+        lines = f.readlines()
+        nline = len(lines)
+        for l in lines:
+            if i >= 30 and i <= nline - 30:
+                l = l.split(' ')
+                try:
+                    exec_lats.append(float(l[1]))
+                    commit_lats.append(float(l[2]))
+                except:
+                    pass
+            i = i + 1
 
     return {
         'mean_lat_commit': statistics.mean(commit_lats),
