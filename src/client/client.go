@@ -94,7 +94,7 @@ func main() {
 	} else {
 		leader = *forceLeader
 	}
-	log.Printf("The leader is replica %d\n", leader)
+	log.Printf("The leader is replica %d: %s\n", leader, *leaderAddr)
 
 	readings := make(chan *response, 100000)
 
@@ -102,7 +102,7 @@ func main() {
 		// server, err := net.Dial("tcp", rlReply.ReplicaList[leader])
 		server, err := net.Dial("tcp", fmt.Sprintf("%s:7070", *leaderAddr))
 		if err != nil {
-			log.Fatalf("Error connecting to replica %d\n", leader)
+			log.Fatalf("client %d -> Error connecting to replica %s: %v\n", i, *leaderAddr, err)
 		}
 		reader := bufio.NewReader(server)
 		writer := bufio.NewWriter(server)
