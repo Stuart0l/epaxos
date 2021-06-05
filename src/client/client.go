@@ -96,7 +96,7 @@ func main() {
 	}
 	log.Printf("The leader is replica %d: %s\n", leader, *leaderAddr)
 
-	readings := make(chan *response, 100000)
+	readings := make(chan *response, 1000000)
 
 	for i := 0; i < *T; i++ {
 		// server, err := net.Dial("tcp", rlReply.ReplicaList[leader])
