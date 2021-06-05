@@ -37,7 +37,7 @@ def get_metrics(dirname):
         nline = len(lines)
         for l in lines:
             # drop first and last 30 seconds
-            if i >= 200 and i <= nline - 30:
+            if i >= 30 and i <= nline - 30:
                 l = l.split(' ')
                 try:
                     tputs.append(float(l[2]))
