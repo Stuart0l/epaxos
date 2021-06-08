@@ -23,6 +23,7 @@ import json
 import numpy as np
 from os import path
 import statistics
+import matplotlib.pyplot as plt
 
 def get_metrics(dirname):
     """
@@ -49,10 +50,8 @@ def get_metrics(dirname):
         exec_lats = []
         commit_lats = []
         i = 0
-        lines = f.readlines()
-        nline = len(lines)
-        for l in lines:
-            if i >= 3000 and i <= nline - 30:
+        for l in f:
+            if i % 10000 == 0:
                 l = l.split(' ')
                 try:
                     exec_lats.append(float(l[1]))
@@ -61,6 +60,11 @@ def get_metrics(dirname):
                     pass
             i = i + 1
 
+    x = np.arange(len(exec_lats))
+    plt.plot(x, exec_lats, label='exec')
+    plt.plot(x, commit_lats, label='commit')
+    plt.legend()
+    plt.savefig('lattime.png')
     return {
         'mean_lat_commit': statistics.mean(commit_lats),
         'p50_lat_commit': np.percentile(commit_lats, 50),
