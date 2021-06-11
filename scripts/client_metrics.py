@@ -51,7 +51,7 @@ def get_metrics(dirname):
         commit_lats = []
         i = 0
         for l in f:
-            if i % 10000 == 0:
+            if i % 10 == 0:
                 l = l.split(' ')
                 try:
                     exec_lats.append(float(l[1]))
