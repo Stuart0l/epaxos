@@ -49,16 +49,18 @@ def get_metrics(dirname):
     with open(path.join(dirname, 'latency.txt')) as f:
         exec_lats = []
         commit_lats = []
-        i = 0
+        #i = 0
         for l in f:
             l = l.split(' ')
             try:
+                if float(l[2]) < 0:
+                    continue
                 exec_lats.append(float(l[1]))
                 commit_lats.append(float(l[2]))
             except:
                 pass
-            i = i + 1
 
+    #print(i)
     #x = np.arange(len(exec_lats))
     plt.plot(exec_lats, label='exec')
     plt.plot(commit_lats, label='commit')
