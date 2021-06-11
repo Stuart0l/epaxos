@@ -61,7 +61,7 @@ def get_metrics(dirname):
 
     #x = np.arange(len(exec_lats))
     plt.plot(exec_lats, label='exec')
-    #plt.plot(x, commit_lats, label='commit')
+    plt.plot(commit_lats, label='commit')
     plt.legend()
     plt.savefig('lattime.png')
     return {
