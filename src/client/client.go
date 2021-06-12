@@ -35,6 +35,7 @@ var zKeys = flag.Uint64("z", 1e9, "Number of unique keys in zipfian distribution
 var poissonAvg = flag.Int("poisson", -1, "The average number of microseconds between requests. -1 disables Poisson.")
 var percentWrites = flag.Float64("writes", 1, "A float between 0 and 1 that corresponds to the percentage of requests that should be writes. The remainder will be reads.")
 var blindWrites = flag.Bool("blindwrites", false, "True if writes don't need to execute before clients receive responses.")
+var cid = flag.Int("id", -1, "client id.")
 
 // Information about the latency of an operation
 type response struct {
@@ -141,7 +142,11 @@ func simulatedClientWriter(writer *bufio.Writer, orInfo *outstandingRequestInfo)
 			if r < *conflicts {
 				args.Command.K = 42
 			} else {
-				args.Command.K = state.Key(*startRange + 43 + int(id))
+				if *cid < 0 {
+					args.Command.K = state.Key(*startRange + 43 + int(id))
+				} else {
+					args.Command.K = state.Key(*startRange + 43 + 5*int(id) + *cid)
+				}
 			}
 		} else {
 			args.Command.K = state.Key(zipf.NextNumber())
