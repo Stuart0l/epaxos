@@ -114,7 +114,7 @@ func main() {
 			make(map[int32]time.Time, *outstandingReqs),
 		}
 
-		go simulatedClientWriter(writer, orInfo)
+		go simulatedClientWriter(writer, orInfo, i)
 		go simulatedClientReader(reader, orInfo, readings)
 
 		orInfos[i] = orInfo
@@ -123,7 +123,7 @@ func main() {
 	printer(readings)
 }
 
-func simulatedClientWriter(writer *bufio.Writer, orInfo *outstandingRequestInfo) {
+func simulatedClientWriter(writer *bufio.Writer, orInfo *outstandingRequestInfo, tid int) {
 	args := genericsmrproto.Propose{0 /* id */, state.Command{state.PUT, 0, 0}, 0 /* timestamp */}
 
 	conflictRand := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -145,7 +145,7 @@ func simulatedClientWriter(writer *bufio.Writer, orInfo *outstandingRequestInfo)
 				if *cid < 0 {
 					args.Command.K = state.Key(*startRange + 43 + int(id))
 				} else {
-					args.Command.K = state.Key(*startRange + 43 + 5*int(id) + *cid)
+					args.Command.K = state.Key(*startRange + 43 + 5*(*T)*int(id) + tid*(*T) + *cid)
 				}
 			}
 		} else {

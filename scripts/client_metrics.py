@@ -53,10 +53,11 @@ def get_metrics(dirname):
         for l in f:
             l = l.split(' ')
             try:
-                if float(l[2]) < 0:
+                exec_time = float(l[2])
+                if exec_time < 0 or exec_time > 1000000:
                     continue
                 exec_lats.append(float(l[1]))
-                commit_lats.append(float(l[2]))
+                commit_lats.append(exec_time)
             except:
                 pass
 
