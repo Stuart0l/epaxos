@@ -185,6 +185,10 @@ func simulatedClientWriter(writer *bufio.Writer, orInfo *outstandingRequestInfo,
 		args.Marshal(writer)
 		writer.Flush()
 
+		if id%100 == 0 {
+			writer.Flush()
+		}
+
 		orInfo.Lock()
 		orInfo.startTimes[id] = before
 		orInfo.Unlock()
